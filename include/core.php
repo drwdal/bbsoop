@@ -26,6 +26,8 @@ if ( ! defined ( 'IMGBOARD_INIT' ) ) { header ( 'Status: 403', TRUE, 403 ); die(
 
 /* INITIALIZE
 ================================================== */
+// hide bad practice
+error_reporting(E_ERROR);
 // simple functions and strings that help to load and run other code
 require ( 'initializers.php' );
 // yo dawg, requiring this fill will require other files so you can require files while you require this file

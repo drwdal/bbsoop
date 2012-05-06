@@ -1,0 +1,25 @@
+/*
+This is a mobile stylesheet for devices that have small screens, touch input, and/or less bandwidth
+Its primary goal is to hide certain elements from rendering, to improve the usability and appearance
+*/
+
+/* HIDE STUFF ========== */
+.media-count, .bumped-at, .view-count, #nav-popular, #nav-activity, .post-user-actions, h3 .meta { display: none !important; }
+
+/* ADJUST LAYOUT ========== */
+body.mobile { padding: 0px !important; background: #fff !important; }
+#page { padding: 5px 10px 30px 10px; border: none !important; margin-bottom: 0px !important; }
+#content .reply .wrapper, #content #topic .wrapper { padding: 10px 0 0 0 !important; }
+.pagination a, .pagination .spacer { display: none; }
+.pagination a.next, .pagination a.previous { display: inline; }
+
+/* ADJUST TYPOGRAPHY ========== */
+h1 { font-size: 3em; }
+body.mobile .spoiler { color: #666 !important; }
+#content>p, #content .wrapper>p, #content>ul, #content .wrapper>ul, #content>ol, #content .wrapper>ol, #content blockquote>p { font-size: 1.3em; line-height: 1.5em; }
+body.mobile #content .reply-count { width: 60px !important; }
+body.mobile #content p .new-reply-count { font-size: 0.9em; }
+
+/* ADJUST FORMS ========== */
+body.mobile form label { float: none; width: auto; }
+form .help { display: block; }

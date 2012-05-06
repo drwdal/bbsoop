@@ -1,0 +1,92 @@
+<p>This site is currently just for testing. The code is original, but loosely based on the setup and concept of <a href="http://www.overtalk.org/">ATBBS</a> (which was built as an improvement/alternative to <a href="http://kusabax.cultnet.net/">Kusaba X</a>). The development is primarily an academic exercise, and is not yet prepared for release.</p>
+<p>The code is a bare bones, PHP model-view-controller framework inspired by the concepts and aesthetics of Ruby on Rails. Some methods and structures are inspired by WordPress.</p>
+<p>The database is using the InnoDB storage engine with moderate use of foreign keys and indexes.</p>
+<p>The application is able to run in any directory structure, does not have to be installed at the server’s document root, and resolves canonical address issues (<a href="http://www.authorizedclone.com/test/board/">Example</a>).</p>
+<h2>Features priority…</h2>
+<ol>
+	<li>security</li>
+	<li>portability</li>
+	<li>lightweight</li>
+	<li>speed</li>
+	<li>ease of use</li>
+	<li>appearance</li>
+	<li>cool shit</li>
+</ol>
+<h2>Server specs…</h2>
+<ul>
+	<li>
+		CentOS 5.4
+		<ul>
+			<li>One Xeon X3360 @ 2.83GHz</li>
+			<li>8 GB ram</li>
+		</ul>
+	</li>
+	<li>Apache 2</li>
+	<li>PHP 5.2.13</li>
+	<li>MySQL 5</li>
+</ul>
+<h2>Required software</h2>
+<ul>
+	<li>
+		PHP 5.2+
+		<ul>
+			<li>GD</li>
+			<li>mysql</li>
+			<li>SHA1</li>
+		</ul>
+	</li>
+	<li>
+		Apache 1.x
+		<ul>
+			<li>mod_rewrite</li>
+		</ul>
+	</li>
+	<li>MySQL 5</li>
+</ul>
+<h2>Recommended software</h2>
+<ul>
+	<li>
+		PHP 5.2.13+
+		<ul>
+			<li>ImageMagick</li>
+			<li>mysqli</li>
+		</ul>
+	</li>
+	<li>
+		Apache 2.x
+		<ul>
+			<li>mod_headers</li>
+			<li>mod_expires</li>
+			<li>mod_deflate</li>
+			<li>mod_ssl</li>
+		</ul>
+	</li>
+	<li>MySQL 5</li>
+</ul>
+<h2>Performance</h2>
+<h3>April 2010</h3>
+<p>An empty page on the framework could load in 0.005 seconds and PHP was allocated less than 300 KB RAM. The Apache process was using less than 12 MB of RAM.</p>
+<h3>May 2010</h3>
+<h4>May 1</h4>
+<p>A /topics page with 1400 records was able to load, parse, and sanitize in less than 0.05 seconds. PHP was allocated less than 3 MB of RAM and the Apache process was using less than 20 MB of RAM.</p>
+<h4>May 2</h4>
+<p>A topic with 21 image replies was able to load, parse, and sanitize in 0.02 seconds. PHP was allocated less than 1 MB of RAM and the Apache process was using less than 20 MB of RAM. With partial caching turned on (standard cache level), the same page loaded in less than 0.01 seconds. The method for collecting image replies is currently inefficient, requiring an extra SELECT query for each.</p>
+<blockquote class="wrapper"><p>TODO: add a method to define relationships in the models, and add logic in the Model::find ( ) method that collects these relationships in one multi-query.</p></blockquote>
+<p>Loading up the ImageMagick module causes Apache to consume much more RAM—around 60 MB (this was later found to be virtual memory—RAM usage stays in the mid-20 MB range).</p>
+<p>The InnoDB storage engine appears to be quite efficient—loading up a large page (while cache is off; 131 SELECTs required) with many records is slow on the first load (0.5 seconds) but then fast afterward (0.05 seconds).</p>
+<h4>May 5</h4>
+<p>An Apache Benchmark test was run with these parameters: <code>ab -n 5000 -c 10 -k -H 'Accept-Encoding: gzip' http://authorizedclone.com/board/topics</code>; results…</p>
+<blockquote>
+<pre>
+Requests per second:	91.55	[#/sec]		(mean)
+Time per request:	109.235	[ms]		(mean)
+Time per request:	10.923	[ms]		(mean, across all concurrent requests)
+Transfer rate:		167.76	[Kbytes/sec]	received
+</pre>
+</blockquote>
+<p>The /topics page had 13 records on it. The highest five-second load average was 2.13</p>
+<h4>May 10</h4>
+<p>The database now has a production-level set of records: 30,000 user accounts, 10,000 topics, and 100,000 replies. The current performance is <strong>200 requests per second.</strong></p>
+
+
+

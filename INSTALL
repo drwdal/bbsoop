@@ -1,0 +1,18 @@
+Installing BBSOOP
+
+1. Upload all files to your webserver
+2. Set up the database through the console or phpMyAdmin
+		cd /path/to/app
+		mysql -u root -p < schema.sql
+3. Rename .htaccess-default to .htaccess
+		mv .htaccess-default .htaccess
+4. Edit .htaccess line 5
+	the value should be '/path/' where path is the URI after your domain
+	(i.e. http://example.org/board/ = '/board/' or http://example.org = '/')
+5. Rename config/_APPCONFIG.class.example.php to config/_APPCONFIG.class.php
+		mv config/_APPCONFIG.class.example.php config/_APPCONFIG.class.php
+6. Edit config/_APPCONFIG.class.php as instructed by the comments inside
+7. Rename config/config.example.php to config/config.php
+		mv config/config.example.php config/config.php
+8. Edit config/config.php to reflect your desired settings
+9. Visit the application in your web browser to complete installation

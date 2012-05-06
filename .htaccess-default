@@ -1,0 +1,100 @@
+Options -Indexes
+
+RewriteEngine on
+# ROUTES ##########
+# base URI goes here
+RewriteBase /bbsoop/
+# BOARD MECHANICS ##########
+RewriteRule ^board/([^/.]+)/([0-9]+)/?$ index.php?board_name=$1&controller=board&action=index&ID=$2 [L]
+RewriteRule ^board/([^/.]+)/topics/([0-9]+)/?$ index.php?board_name=$1&controller=topics&action=view&ID=$2 [L]
+RewriteRule ^board/([^/.]+)/([^/.]+)/([^/.]+)/([^/.]+)/([^/.]+)/?$ index.php?board_name=$1&controller=topics&action=$2&ID=$3&fragment=$4&extra=$5 [L]
+RewriteRule ^board/([^/.]+)/([^/.]+)/([^/.]+)/([^/.]+)/?$ index.php?board_name=$1&controller=topics&action=$2&ID=$3&fragment=$4 [L]
+RewriteRule ^board/([^/.]+)/([^/.]+)/([^/.]+)/?$ index.php?board_name=$1&controller=topics&action=$2&ID=$3 [L]
+RewriteRule ^board/([^/.]+)/([^/.]+)/?$ index.php?board_name=$1&controller=topics&action=$2 [L]
+# BOARD + CONTROLLER ##########
+RewriteRule ^board/([^/.]+)/([^/.]+)/([^/.]+)/([^/.]+)/([^/.]+)/([^/.]+)/?$ index.php?board_name=$1&controller=$2&action=$3&ID=$4&fragment=$5&extra=$6 [L]
+RewriteRule ^board/([^/.]+)/([^/.]+)/([^/.]+)/([^/.]+)/([^/.]+)/?$ index.php?board_name=$1&controller=$2&action=$3&ID=$4&fragment=$5 [L]
+RewriteRule ^board/([^/.]+)/([^/.]+)/([^/.]+)/([^/.]+)/?$ index.php?board_name=$1&controller=$2&action=$3&ID=$4 [L]
+RewriteRule ^board/([^/.]+)/([^/.]+)/([^/.]+)/?$ index.php?board_name=$1&controller=$2&action=$3 [L]
+RewriteRule ^board/([^/.]+)/([^/.]+)/?$ index.php?board_name=$1&controller=$2&action=index [L]
+RewriteRule ^board/([^/.]+)/?$ index.php?board_name=$1&controller=board&action=index [L]
+# DEFAULTS ##########
+RewriteRule ^([^/.]+)/([^/.]+)/([^/.]+)/([^/.]+)/([^/.]+)/?$ index.php?controller=$1&action=$2&ID=$3&fragment=$4&extra=$5 [L]
+RewriteRule ^([^/.]+)/([^/.]+)/([^/.]+)/([^/.]+)/?$ index.php?controller=$1&action=$2&ID=$3&fragment=$4 [L]
+RewriteRule ^([^/.]+)/([^/.]+)/([^/.]+)/?$ index.php?controller=$1&action=$2&ID=$3 [L]
+RewriteRule ^([^/.]+)/([^/.]+)/?$ index.php?controller=$1&action=$2 [L]
+RewriteRule ^([^/.]+)/?$ index.php?controller=$1&action=index [L]
+# HOME ##########
+RewriteRule ^$ index.php?controller=board&action=index&board_name=default [L]
+
+# BAN ALL (easily identified) PROXIES (not always ideal)
+#RewriteCond %{HTTP:VIA}                 !^$ [OR]
+#RewriteCond %{HTTP:FORWARDED}           !^$ [OR]
+#RewriteCond %{HTTP:USERAGENT_VIA}       !^$ [OR]
+#RewriteCond %{HTTP:X_FORWARDED_FOR}     !^$ [OR]
+#RewriteCond %{HTTP:PROXY_CONNECTION}    !^$ [OR]
+#RewriteCond %{HTTP:XPROXY_CONNECTION}   !^$ [OR]
+#RewriteCond %{HTTP:HTTP_PC_REMOTE_ADDR} !^$ [OR]
+#RewriteCond %{HTTP:HTTP_CLIENT_IP}      !^$
+#RewriteRule ^(.*)$ - [F]
+
+order allow,deny
+# DENY GOES HERE #
+#
+# LEAVE NEXT LINE ALONE #
+allow from all
+
+# DEFLATE
+<ifModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/plain text/xml application/x-javascript
+</ifModule>
+
+<ifModule mod_gzip.c>
+  mod_gzip_on Yes
+  mod_gzip_dechunk Yes
+  mod_gzip_item_include file \.(html?|txt|css|js|php|pl)$
+  mod_gzip_item_include handler ^cgi-script$
+  mod_gzip_item_include mime ^text/.*
+  mod_gzip_item_include mime ^application/x-javascript.*
+  mod_gzip_item_exclude mime ^image/.*
+  mod_gzip_item_exclude rspheader ^Content-Encoding:.*gzip.*
+</ifModule>
+
+<IfModule mod_expires.c>
+  ExpiresActive on 
+  ExpiresByType image/jpg "access 1 month"
+  ExpiresByType image/jpeg "access 1 month"
+  ExpiresByType image/gif "access 1 month"
+  ExpiresByType image/png "access 1 month"
+  ExpiresByType text/html "access 1 day"
+  ExpiresByType text/javascript "access 1 month"
+  ExpiresByType application/x-javascript "access 1 month"
+  ExpiresByType text/css "access 1 month"
+  ExpiresDefault "access 2 days" 
+</IfModule>
+
+<ifModule mod_headers.c>
+  <filesMatch "\\.(ico|pdf|flv|jpg|jpeg|png|gif|swf)$">
+    Header set Cache-Control "max-age=2592000, public"
+  </filesMatch>
+  <filesMatch "\\.(css)$">
+    Header set Cache-Control "max-age=604800, public"
+    Header set Vary "accept-encoding"
+  </filesMatch>
+  <filesMatch "\\.(js)$">
+    Header set Cache-Control "max-age=216000, private"
+  </filesMatch>
+  <filesMatch "\\.(xml|txt)$">
+    Header set Cache-Control "max-age=216000, public, must-revalidate"
+  </filesMatch>
+  <filesMatch "\\.(html|htm|php)$">
+    Header set Cache-Control "max-age=1, private, must-revalidate"
+  </filesMatch>
+</ifModule>
+
+# Error
+ErrorDocument 400 /content/themes/default/views/error/400.html
+ErrorDocument 403 /content/themes/default/views/error/403.html
+ErrorDocument 404 /content/themes/default/views/error/404.html
+ErrorDocument 500 /content/themes/default/views/error/500.html
+ErrorDocument 503 /content/themes/default/views/error/503.html
